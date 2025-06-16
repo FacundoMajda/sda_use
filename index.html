@@ -135,8 +135,14 @@
         },
 
         async cosineSimilarity(vecA, vecB) {
-          // tf.tidy limpia todos los tensores intermedios dentro de esta función
+          // Se normalizan los vectores para que solo importe su dirección (su significado).
+          // Luego se multiplica elemento a elemento y se suma todo: esto da el "coseno de similitud".
+          // Cuanto más cercano a 1, más parecidos son.
+
+          // tf.tidy() elimina automáticamente los tensores temporales dentro del bloque.
+          // Evita que se acumulen en memoria y cause fugas (memory leaks).
           const scoreTensor = tf.tidy(() => {
+            // squeeze() Elimina dimensiones extra innecesarias (por ejemplo, [1,512] pasa a [512])
             const a = vecA.squeeze();
             const b = vecB.squeeze();
             const aNorm = a.div(tf.norm(a));
@@ -145,7 +151,6 @@
           });
 
           const score = (await scoreTensor.data())[0];
-          scoreTensor.dispose(); // libera manualmente el tensor devuelto
           return score;
         },
 
@@ -156,6 +161,8 @@
 
           for (let i = 0; i < dataset.length; i++) {
             const itemEmb = this.embeddings.slice([i, 0], [1, -1]);
+            // Selecciona la fila i completa del tensor 2D de embeddings
+            // -1 significa “todas las columnas”
             const score = await this.cosineSimilarity(qEmbedding, itemEmb);
             results.push({ ...dataset[i], score });
           }
@@ -272,6 +279,9 @@
         logLine.innerHTML = `<span style="color: #888;">[${time}]</span> ${msg}`;
         ui.logConsole.appendChild(logLine);
         ui.logConsole.scrollTop = ui.logConsole.scrollHeight;
+        if (ui.logConsole.children.length > 100) {
+          ui.logConsole.removeChild(ui.logConsole.firstChild);
+        }
       }
 
       document.addEventListener("DOMContentLoaded", () => {
