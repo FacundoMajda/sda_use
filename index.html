@@ -103,5 +103,154 @@
         <div id="log-console"></div>
       </section>
     </main>
+
+    <script>
+      const dataset = [
+        {
+          question: "¿Qué es la inteligencia artificial?",
+          answer:
+            "Es la simulación de procesos de inteligencia humana por parte de sistemas informáticos.",
+        },
+        {
+          question: "¿Qué es el aprendizaje automático?",
+          answer:
+            "Es una rama de la IA que permite a las máquinas aprender a partir de datos.",
+        },
+        {
+          question: "¿Qué es un modelo de lenguaje?",
+          answer:
+            "Un modelo de lenguaje es un sistema que predice o genera texto basado en patrones del lenguaje natural.",
+        },
+      ];
+
+      const App = {
+        model: null,
+        embeddings: null,
+        threshold: 0.5, // umbral de similitud para mostrar resultados
+        typingSpeed: 35, // en ms, vamos a simular un typing como streaming de texto
+
+        // Inicializa la app: carga modelo y embebe dataset
+        async init() {
+          // Carga el modelo Universal Sentence Encoder (USE) desde CDN.
+          // Este modelo convierte texto en vectores numéricos que capturan el significado,
+          // para que podamos comparar "ideas" más que palabras exactas.
+          log("🚀 Cargando modelo...");
+          this.model = await use.load();
+          log("✅ Modelo cargado.");
+
+          // Genera los embeddings (vectores de significado) para cada pregunta del dataset.
+          // Luego los normaliza para que todas las "flechas" tengan el mismo tamaño,
+          // porque lo que importa es la dirección (el significado), no la longitud.
+          log("🧠 Embedding del dataset...");
+          const questions = dataset.map((q) => q.question);
+          const rawEmbeddings = await this.model.embed(questions);
+          this.embeddings = this.normalizeEmbeddings(rawEmbeddings);
+          rawEmbeddings.dispose();
+          log(`✅ Dataset cargado con ${dataset.length} items.`);
+
+          // Habilita el botón de búsqueda sólo cuando todo está listo.
+          ui.searchButton.disabled = false;
+        },
+        // Normaliza embeddings por norma L2 (unitarios)
+        normalizeEmbeddings(tensor) {
+          // Normaliza los vectores para que el cálculo de similitud coseno funcione correctamente.
+          // Imaginá cada oración como una flecha apuntando en un espacio abstracto.
+          // La normalización hace que todas las flechas tengan tamaño 1,
+          // así sólo comparamos hacia dónde apuntan, es decir, el significado.
+          return tf.div(tensor, tf.norm(tensor, 2, 1).expandDims(1));
+        },
+
+        async handleQuery(query) {
+          // Convierte la pregunta del usuario en un vector que representa su significado.
+          const qVec = await this.model.embed([query]);
+          // Normaliza este vector para que tenga magnitud 1 (unidad),
+          // igual que los vectores del dataset.
+          const qNorm = tf.div(qVec, tf.norm(qVec));
+          // Calcula la similitud coseno entre el vector de la consulta
+          // y cada vector pre-calculado del dataset.
+          // Esto es un número entre -1 y 1 que indica qué tan alineados están los significados.
+          // Más cercano a 1 = significado muy parecido.
+          const similarities = tf.matMul(qNorm, this.embeddings, false, true);
+          // Obtiene los valores de similitud como array de números.
+          const scores = await similarities.data();
+          // Limpia la memoria de TensorFlow
+          qVec.dispose();
+          qNorm.dispose();
+          similarities.dispose();
+          // Devuelve los puntajes de similitud.
+          return scores;
+        },
+
+        async runSearch() {
+          const query = ui.questionInput.value.trim();
+          if (!query) return;
+
+          ui.resultBox.innerHTML = "";
+          log(`📝 Pregunta: "${query}"`);
+
+          const scores = await this.handleQuery(query);
+          const results = dataset
+            .map((item, i) => ({ ...item, score: scores[i] }))
+            .filter((r) => r.score > this.threshold)
+            .sort((a, b) => b.score - a.score);
+
+          if (results.length === 0) {
+            typeWriter(
+              ui.resultBox,
+              "⚠️ No se encontraron coincidencias relevantes."
+            );
+          } else {
+            typeWriter(
+              ui.resultBox,
+              results
+                .map((r) => `✅ ${r.answer} (score: ${r.score.toFixed(2)})`)
+                .join("\n\n")
+            );
+          }
+        },
+      };
+
+      const ui = {
+        questionInput: document.getElementById("question-input"),
+        searchButton: document.getElementById("search-button"),
+        resultBox: document.getElementById("initial-msg"),
+        logConsole: document.getElementById("log-console"),
+      };
+
+      //funciones auxiliares
+      function typeWriter(
+        element,
+        text,
+        speed = App.typingSpeed,
+        onComplete = null
+      ) {
+        let i = 0;
+        element.innerHTML = "";
+        function type() {
+          if (i < text.length) {
+            element.innerHTML +=
+              text.charAt(i) === "\n" ? "<br>" : text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+          } else if (onComplete) {
+            onComplete();
+          }
+        }
+        type();
+      }
+
+      function log(msg) {
+        const logLine = document.createElement("div");
+        const time = new Date().toLocaleTimeString();
+        logLine.innerHTML = `<span style="color: #888;">[${time}]</span> ${msg}`;
+        ui.logConsole.appendChild(logLine);
+        ui.logConsole.scrollTop = ui.logConsole.scrollHeight;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        App.init();
+        ui.searchButton.addEventListener("click", () => App.runSearch());
+      });
+    </script>
   </body>
 </html>
