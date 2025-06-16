@@ -105,13 +105,474 @@
     </main>
 
     <script>
-      const dataset = [];
+      const dataset = [
+    {
+      "answer": "la inteligencia artificial, o ia, es un campo amplio que dota a las maquinas de la capacidad de imitar la inteligencia humana, operando desde sistemas inertes y no biologicos.",
+      "question": "podrias definir que es la inteligencia artificial?"
+    },
+    {
+      "answer": "se considera inteligencia artificial a la capacidad de un sistema no biologico para simular el comportamiento humano, sin importar la complejidad de su tecnica.",
+      "question": "a que se le llama inteligencia artificial?"
+    },
+    {
+      "answer": "el objetivo de la ia es crear sistemas que puedan realizar tareas que normalmente requieren inteligencia humana, como el aprendizaje, el razonamiento y la percepcion.",
+      "question": "cual es el proposito fundamental de la ia?"
+    },
+    {
+      "answer": "tensorflow.js es una libreria de javascript que facilita la implementacion y ejecucion de modelos de aprendizaje automatico tanto en el lado del cliente (navegador) como en el lado del servidor (node.js).",
+      "question": "para que sirve la libreria tensorflow.js?"
+    },
+    {
+      "answer": "con tensorflow.js, los programadores de javascript pueden desplegar modelos de machine learning directamente en el navegador web o en un entorno de servidor con node.js.",
+      "question": "en que entornos se puede utilizar tensorflow.js?"
+    },
+    {
+      "answer": "la principal utilidad de tensorflow.js es permitir a los desarrolladores web construir y ejecutar aplicaciones de inteligencia artificial usando unicamente javascript.",
+      "question": "cual es la principal ventaja de tensorflow.js para un desarrollador web?"
+    },
+    {
+      "answer": "un modelo de aprendizaje automatico es una estructura de datos y algoritmos, representada por numeros y un grafico neural, que se entrena para realizar predicciones o tomar decisiones a partir de nuevos datos.",
+      "question": "define que es un modelo en el contexto de machine learning."
+    },
+    {
+      "answer": "basicamente, un modelo es el resultado de entrenar un algoritmo con datos. esta compuesto por una coleccion de numeros (pesos) que le permiten hacer predicciones.",
+      "question": "en terminos simples, que es un modelo de aprendizaje automatico?"
+    },
+    {
+      "answer": "el aprendizaje supervisado, no supervisado, semisupervisado y por refuerzo son las cuatro ramas principales del aprendizaje automatico.",
+      "question": "cuales son las categorias principales del aprendizaje automatico?"
+    },
+    {
+      "answer": "el aprendizaje supervisado se basa en datos previamente etiquetados para entrenar al modelo, mientras que el no supervisado trabaja con datos sin etiquetar para encontrar patrones ocultos.",
+      "question": "que diferencia hay entre aprendizaje supervisado y no supervisado?"
+    },
+    {
+      "answer": "el aprendizaje por refuerzo es un tipo de machine learning donde un agente aprende a tomar decisiones interactuando con un entorno para maximizar una recompensa.",
+      "question": "como funciona el aprendizaje por refuerzo?"
+    },
+    {
+      "answer": "para usar tensorflow.js en una pagina web, puedes añadir una etiqueta de script que apunte a su cdn o instalarlo via npm para luego importarlo en tu codigo.",
+      "question": "de que maneras puedo incluir tensorflow.js en mi proyecto web?"
+    },
+    {
+      "answer": "la forma mas sencilla de agregar tensorflow.js a una web es mediante una etiqueta script que enlaza directamente a la version alojada en una red de entrega de contenidos (cdn).",
+      "question": "cual es el metodo mas facil para empezar a usar tensorflow.js en html?"
+    },
+    {
+      "answer": "en un entorno de servidor node.js, debes instalar el paquete npm @tensorflow/tfjs-node. si tienes una gpu compatible, puedes usar @tensorflow/tfjs-node-gpu para mayor rendimiento.",
+      "question": "que paquete de npm debo instalar para usar tensorflow.js en mi servidor?"
+    },
+    {
+      "answer": "la version de node.js de tensorflow.js permite ejecutar los modelos en el servidor, aprovechando mas potencia de calculo y accediendo al sistema de archivos, algo que no es posible en el navegador.",
+      "question": "que ventajas ofrece usar tensorflow.js en node.js en lugar del navegador?"
+    },
+    {
+      "answer": "el modelo de toxicidad de tensorflow.js evalua un texto para detectar la probabilidad de que sea toxico, identificando categorias como insultos u odio.",
+      "question": "que hace el modelo de toxicidad de tfjs?"
+    },
+    {
+      "answer": "este modelo preentrenado analiza cadenas de texto y devuelve una puntuacion de probabilidad para varias formas de contenido ofensivo o dañino.",
+      "question": "como evalua el texto el clasificador de toxicidad?"
+    },
+    {
+      "answer": "mobilenet es un modelo de vision por computadora eficiente y ligero, diseñado para clasificar imagenes en dispositivos con recursos limitados, como telefonos moviles o navegadores web.",
+      "question": "que tipo de modelo es mobilenet?"
+    },
+    {
+      "answer": "la principal aplicacion de mobilenet es la clasificacion de imagenes. puede tomar un <img>, <video> o <canvas> y predecir que objeto es el predominante en el.",
+      "question": "para que se utiliza principalmente el modelo mobilenet?"
+    },
+    {
+      "answer": "los tensores son la unidad basica de datos en tensorflow.js, similares a arrays o matrices multidimensionales que almacenan datos numericos para los calculos del modelo.",
+      "question": "que papel juegan los tensores en tensorflow.js?"
+    },
+    {
+      "answer": "un tensor es una estructura de datos que generaliza vectores y matrices a dimensiones superiores. es el contenedor principal para los datos que fluyen a traves de los modelos.",
+      "question": "puedes explicar que es un tensor en terminos mas simples?"
+    },
+    {
+      "answer": "se crean usando funciones como tf.tensor(), pasandole un array de javascript. tambien existen funciones especificas como tf.tensor2d() para crear tensores con una forma determinada.",
+      "question": "como puedo generar un tensor en mi codigo?"
+    },
+    {
+      "answer": "puedes crear un tensor a partir de un array de javascript y opcionalmente definir su forma (dimensiones) y su tipo de dato (dtype) como 'float32' o 'int32'.",
+      "question": "que argumentos se usan para crear un tensor?"
+    },
+    {
+      "answer": "la gestion de memoria de tensores es crucial porque no son eliminados automaticamente por el recolector de basura. se debe usar .dispose() o envolver el codigo en tf.tidy() para evitar fugas de memoria.",
+      "question": "por que es importante gestionar la memoria de los tensores?"
+    },
+    {
+      "answer": "para liberar la memoria de un tensor, debes llamar explicitamente al metodo .dispose(). alternativamente, la funcion tf.tidy() limpia automaticamente todos los tensores intermedios creados en su ambito.",
+      "question": "cuales son los metodos para liberar la memoria de un tensor?"
+    },
+    {
+      "answer": "para obtener los valores de un tensor como un array de javascript, puedes usar .data() o .array() para una operacion asincrona, o .datasync() y .arraysync() para una sincrona.",
+      "question": "como extraigo los datos de un tensor a una variable de javascript?"
+    },
+    {
+      "answer": "la funcion .print() es un metodo de depuracion que muestra los valores de un tensor directamente en la consola, mientras que .data() los devuelve para que puedas usarlos en tu codigo.",
+      "question": "para que sirve el metodo .print() de un tensor?"
+    },
+    {
+      "answer": "una imagen a color se representa como un tensor tridimensional con forma [alto, ancho, 3], donde 3 corresponde a los canales de color rojo, verde y azul (rgb).",
+      "question": "cual es la forma de un tensor que representa una imagen rgb?"
+    },
+    {
+      "answer": "si la imagen tiene transparencia, se representa con un tensor de forma [alto, ancho, 4], correspondiente a los canales rgba (rojo, verde, azul, alfa).",
+      "question": "como se representa una imagen con canal alfa como un tensor?"
+    },
+    {
+      "answer": "puedes usar tf.ones para crear un tensor lleno de unos, tf.zeros para uno lleno de ceros, o tf.tile para repetir un pequeño patron y asi generar una imagen mas grande.",
+      "question": "que funciones de tfjs sirven para generar tensores de imagen?"
+    },
+    {
+      "answer": "la funcion tf.fill te permite crear un tensor de una forma determinada y llenarlo con un valor escalar especifico, util para crear imagenes de un color solido.",
+      "question": "como puedo crear una imagen de un color solido usando tensores?"
+    },
+    {
+      "answer": "se utiliza la funcion tf.browser.topixels(), la cual toma un tensor de imagen y un elemento canvas de html como argumentos para dibujar el contenido del tensor en el canvas.",
+      "question": "como puedo dibujar un tensor en un canvas html?"
+    },
+    {
+      "answer": "la funcion tf.browser.frompixels() es la encargada de tomar un elemento del dom como un <img> o <canvas> y transformarlo en un tensor para su procesamiento.",
+      "question": "que funcion convierte un elemento de imagen del html en un tensor?"
+    },
+    {
+      "answer": "en un entorno de servidor con node.js, las funciones node.encodejpeg o node.encodepng se usan para transformar un tensor en un formato de imagen que se puede guardar.",
+      "question": "como guardo un tensor como archivo jpg o png en node.js?"
+    },
+    {
+      "answer": "para cambiar las dimensiones de un tensor de imagen, se utilizan las funciones tf.image.resizebilinear o tf.image.resizenearestneighbor.",
+      "question": "que funciones se usan para cambiar el tamaño de una imagen?"
+    },
+    {
+      "answer": "tf.image.resizebilinear produce una imagen mas suave mediante interpolacion, mientras que tf.image.resizenearestneighbor es mas rapida pero puede producir una imagen pixelada.",
+      "question": "que diferencia hay entre resizebilinear y resizenearestneighbor?"
+    },
+    {
+      "answer": "para recortar una porcion de un tensor de imagen, se utiliza la funcion tf.slice(), a la que se le proporciona el punto de inicio y el tamaño del recorte deseado.",
+      "question": "como se extrae una seccion de un tensor de imagen?"
+    },
+    {
+      "answer": "para cargar un modelo, se usa tf.loadgraphmodel o tf.loadlayersmodel, dependiendo del tipo de modelo, y se le pasa la url del archivo de configuracion model.json.",
+      "question": "cual es el procedimiento para cargar un modelo en tensorflow.js?"
+    },
+    {
+      "answer": "tfhub es una plataforma de google que ofrece una coleccion de modelos de aprendizaje automatico preentrenados, listos para ser usados en diversas tareas como la clasificacion de imagenes.",
+      "question": "para que sirve tensorflow hub?"
+    },
+    {
+      "answer": "la localizacion de objetos es una tarea de vision por computadora que no solo clasifica un objeto en una imagen, sino que tambien identifica su posicion mediante un cuadro delimitador.",
+      "question": "en que consiste la localizacion de objetos?"
+    },
+    {
+      "answer": "para dibujar el cuadro delimitador, se coloca un elemento <canvas> con posicion absoluta sobre el <img>. luego, se usan las coordenadas del modelo para dibujar un rectangulo en el canvas.",
+      "question": "cual es la tecnica para superponer un cuadro delimitador en una imagen?"
+    },
+    {
+      "answer": "ssd mobilenet es un modelo de deteccion de objetos que utiliza la arquitectura mobilenet. ssd significa 'single shot detector', lo que lo hace muy rapido para la deteccion en tiempo real.",
+      "question": "que significa ssd en ssd mobilenet?"
+    },
+    {
+      "answer": "la interseccion sobre union (iou) es una metrica que calcula el grado de superposicion entre dos cuadros. es fundamental en la supresion no maxima (nms) para filtrar las detecciones duplicadas.",
+      "question": "que es la metrica iou?"
+    },
+    {
+      "answer": "el metodo navigator.mediadevices.getusermedia permite capturar el video de la camara web del usuario. este video se puede procesar en tiempo real, cuadro a cuadro, para realizar detecciones.",
+      "question": "como se integra la camara web con tensorflow.js?"
+    },
+    {
+      "answer": "para que las etiquetas sean visibles sobre cualquier fondo, una tecnica comun es dibujar un rectangulo de fondo solido (usando fillrect) debajo del texto de la etiqueta.",
+      "question": "como puedo asegurar que el texto de una etiqueta sea legible sobre una imagen?"
+    },
+    {
+      "answer": "se utiliza una herramienta llamada tensorflowjs_converter. esta utilidad de linea de comandos toma un modelo de keras (archivo .h5) y lo exporta al formato de tensorflow.js.",
+      "question": "cual es la herramienta para convertir modelos de keras a tensorflow.js?"
+    },
+    {
+      "answer": "teachable machine es una aplicacion web que simplifica la creacion de modelos de machine learning mediante aprendizaje por transferencia, permitiendo entrenar clasificadores con imagenes o sonidos desde el navegador.",
+      "question": "para que sirve teachable machine?"
+    },
+    {
+      "answer": "el sesgo en los datos de entrenamiento ocurre cuando el conjunto de datos no es representativo del mundo real, lo que provoca que el modelo falle al enfrentarse a situaciones nuevas.",
+      "question": "a que se refiere el sesgo de datos?"
+    },
+    {
+      "answer": "el sobreajuste sucede cuando un modelo se adapta demasiado a los datos de entrenamiento, incluyendo el ruido, lo que le impide generalizar bien a datos que no ha visto antes.",
+      "question": "que es el sobreajuste en un modelo de machine learning?"
+    },
+    {
+      "answer": "un modelo secuencial se crea con tf.sequential(), y luego se le van añadiendo capas de forma ordenada con el metodo .add().",
+      "question": "como se construye un modelo secuencial en tensorflow.js?"
+    },
+    {
+      "answer": "las funciones de activacion como relu o tanh introducen no linealidades, permitiendo que las redes neuronales aprendan relaciones complejas que un modelo lineal no podria capturar.",
+      "question": "por que son necesarias las funciones de activacion?"
+    },
+    {
+      "answer": "la compilacion de un modelo, mediante model.compile(), lo prepara para el entrenamiento. se definen el optimizador que ajustara los pesos, la funcion de perdida que medira el error y las metricas de evaluacion.",
+      "question": "que ocurre durante la compilacion de un modelo?"
+    },
+    {
+      "answer": "para entrenar un modelo, se invoca a model.fit() con los datos de entrenamiento (entradas y etiquetas). durante este proceso, el modelo ajusta sus pesos internos para minimizar la perdida.",
+      "question": "cual es el proceso de entrenamiento de un modelo?"
+    },
+    {
+      "answer": "los modelos de clasificacion estan diseñados para asignar una entrada a una de varias categorias predefinidas, y suelen usar activaciones como softmax en su ultima capa para producir probabilidades.",
+      "question": "cual es el proposito de un modelo de clasificacion?"
+    },
+    {
+      "answer": "softmax es ideal para clasificacion multiclase con una sola respuesta correcta, ya que sus salidas suman 1. sigmoid es para clasificacion binaria o multietiqueta, donde cada salida es una probabilidad independiente.",
+      "question": "cual es la diferencia practica entre softmax y sigmoid?"
+    },
+    {
+      "answer": "danfo.js es una libreria inspirada en pandas para javascript, utilizada para la manipulacion y analisis de datos, como leer csv y preparar los datos para el entrenamiento de modelos.",
+      "question": "que es la libreria danfo.js?"
+    },
+    {
+      "answer": "la ingenieria de caracteristicas es el arte de crear nuevas variables de entrada a partir de los datos existentes para que el modelo pueda aprender patrones mas facilmente y mejorar su rendimiento.",
+      "question": "cual es el objetivo de la ingenieria de caracteristicas?"
+    },
+    {
+      "answer": "las convoluciones son operaciones matematicas que aplican un filtro a una imagen para extraer caracteristicas visuales como bordes, esquinas o texturas.",
+      "question": "que son las convoluciones y para que se usan en vision por computadora?"
+    },
+    {
+      "answer": "max pooling es una tecnica de submuestreo que reduce el tamaño de los mapas de caracteristicas, conservando la informacion mas importante y haciendo el modelo mas robusto.",
+      "question": "cual es la funcion del max pooling?"
+    },
+    {
+      "answer": "una cnn tipicamente tiene capas convolucionales y de pooling para la extraccion de caracteristicas, seguidas de una capa de aplanamiento y capas densas para la clasificacion final.",
+      "question": "cuales son las partes principales de una cnn?"
+    },
+    {
+      "answer": "el proceso implica preparar los datos (imagenes y etiquetas como tensores), definir la arquitectura del modelo cnn, compilarlo y finalmente entrenarlo con los datos preparados.",
+      "question": "describe el flujo de trabajo para entrenar un clasificador de imagenes."
+    },
+    {
+      "answer": "el aprendizaje por transferencia o 'transfer learning' es una tecnica que aprovecha un modelo preentrenado en una tarea grande para resolver un problema similar con menos datos.",
+      "question": "en que consiste el aprendizaje por transferencia?"
+    },
+    {
+      "answer": "generalmente, se congela la mayoria de las capas de un modelo preentrenado como mobilenet y se reemplaza o reentrena solo la ultima capa de clasificacion con los nuevos datos.",
+      "question": "como se implementa el aprendizaje por transferencia en la practica?"
+    },
+    {
+      "answer": "knn es un algoritmo que clasifica nuevos datos basandose en la clase de sus 'k' vecinos mas cercanos en el espacio de caracteristicas.",
+      "question": "como funciona el algoritmo knn?"
+    },
+    {
+      "answer": "si, se puede usar un modelo preentrenado para extraer vectores de caracteristicas de las imagenes y luego aplicar knn en ese espacio de caracteristicas para encontrar similitudes.",
+      "question": "es posible combinar knn con aprendizaje profundo?"
+    },
+    {
+      "answer": "cortar un modelo significa tomar un modelo preentrenado y usar solo sus capas iniciales o intermedias como un extractor de caracteristicas fijo, descartando las capas finales.",
+      "question": "que implica cortar un modelo de capas?"
+    },
+    {
+      "answer": "se pueden conectar dos modelos en serie. por ejemplo, la salida del modelo extractor de caracteristicas se puede usar como entrada para un nuevo modelo clasificador, creando un flujo de trabajo unificado.",
+      "question": "como se combinan dos modelos para crear uno unificado?"
+    },
+    {
+      "answer": "el proyecto 'dicify' busca crear un modelo de ia que pueda tomar un parche de una imagen y predecir cual de las nueve caras de un dado lo representa mejor.",
+      "question": "cual es el desafio del proyecto 'dicify'?"
+    },
+    {
+      "answer": "se pueden generar mas datos de entrenamiento para los dados aplicando transformaciones como pequeños desplazamientos de pixeles o combinando imagenes de dados para crear nuevas variaciones.",
+      "question": "como se pueden generar datos sinteticos para el proyecto de los dados?"
+    },
+    {
+      "answer": "la imagen de entrada se divide en una rejilla. cada celda de la rejilla se pasa al modelo para obtener una prediccion de un dado. luego, todas las imagenes de los dados predichos se ensamblan para formar la imagen final.",
+      "question": "describe el proceso para transformar una imagen en un mosaico de dados."
+    },
+    {
+      "answer": "la binarizacion convierte una imagen en escala de grises a blanco y negro. se establece un umbral; los pixeles mas oscuros que el umbral se vuelven negros (0) y los mas claros se vuelven blancos (1).",
+      "question": "explica el proceso de binarizacion de una imagen."
+    },
+    {
+      "answer": "tensorflow.js es ideal para desarrolladores web porque utiliza javascript, el lenguaje nativo del navegador, permitiendo la creacion de aplicaciones de ia interactivas y del lado del cliente sin barreras de lenguaje.",
+      "question": "por que un desarrollador de javascript deberia usar tensorflow.js?"
+    },
+    {
+      "answer": "no necesariamente. el aprendizaje por transferencia permite adaptar modelos potentes como mobilenet a tus propias clases con un conjunto de datos mucho mas pequeño, a menudo solo cientos de imagenes.",
+      "question": "se necesita una enorme cantidad de datos para entrenar un clasificador de imagenes?"
+    },
+    {
+      "answer": "el metodo .print() esta diseñado para depurar y muestra el contenido de un tensor en la consola. en cambio, console.log() muestra la estructura del objeto tensor, no sus valores.",
+      "question": "que muestra .print() en un tensor en comparacion con console.log()?"
+    },
+    {
+      "answer": "el tamaño del lote define cuantas muestras de entrenamiento se utilizan en una sola iteracion para actualizar los pesos del modelo. afecta la velocidad y la estabilidad del entrenamiento.",
+      "question": "que es el 'batch size' y como influye en el entrenamiento?"
+    },
+    {
+      "answer": "una epoca representa una pasada completa a traves de todo el conjunto de datos de entrenamiento. los modelos se entrenan durante varias epocas para aprender gradualmente los patrones.",
+      "question": "explica que es una epoca en el entrenamiento de machine learning."
+    },
+    {
+      "answer": "una capa densa es una capa neuronal en la que cada neurona esta conectada a todas las neuronas de la capa anterior. son esenciales para las tareas de clasificacion y regresion.",
+      "question": "que funcion tiene una capa densa?"
+    },
+    {
+      "answer": "una capa de aplanamiento transforma un tensor multidimensional, como la salida de una capa convolucional, en un tensor unidimensional (un vector) para poder conectarlo a una capa densa.",
+      "question": "por que se necesita una capa de aplanamiento en una cnn?"
+    },
+    {
+      "answer": "si. en el navegador, utiliza webgl para ejecutar calculos en la gpu. en node.js, puede usar el paquete tfjs-node-gpu para aprovechar las tarjetas graficas nvidia a traves de cuda.",
+      "question": "tensorflow.js puede ser acelerado por gpu?"
+    },
+    {
+      "answer": "al ejecutar los modelos en el navegador, los datos sensibles del usuario, como las imagenes de su camara, nunca abandonan su dispositivo, lo que garantiza un mayor nivel de privacidad.",
+      "question": "de que manera tensorflow.js mejora la privacidad del usuario?"
+    },
+    {
+      "answer": "si. una vez que el modelo y el codigo se han descargado, una aplicacion de tensorflow.js puede realizar inferencias sin conexion a internet, lo que es ideal para pwas.",
+      "question": "se puede ejecutar una inferencia de tensorflow.js sin internet?"
+    },
+    {
+      "answer": "el optimizador es el algoritmo utilizado para cambiar los atributos de la red neuronal, como los pesos, con el fin de reducir las perdidas. adam y sgd son ejemplos de optimizadores.",
+      "question": "que rol cumple el optimizador en el entrenamiento?"
+    },
+    {
+      "answer": "la funcion de perdida calcula la diferencia entre la prediccion del modelo y el valor real. el objetivo del entrenamiento es minimizar este valor.",
+      "question": "como se mide el error de un modelo durante el entrenamiento?"
+    },
+    {
+      "answer": "la codificacion 'one-hot' es una tecnica para convertir variables categoricas en un formato numerico que el modelo puede entender. crea una nueva columna binaria para cada categoria posible.",
+      "question": "explica el concepto de codificacion 'one-hot'."
+    },
+    {
+      "answer": "se puede usar el argumento 'callbacks' en la funcion model.fit(). una devolucion de llamada onepochend, por ejemplo, permite ejecutar una funcion al final de cada epoca para mostrar la perdida y la precision.",
+      "question": "como se puede visualizar el progreso durante el entrenamiento?"
+    },
+    {
+      "answer": "el kernel en una capa convolucional es un pequeño filtro que se desliza sobre la imagen para detectar caracteristicas especificas como bordes o patrones.",
+      "question": "que es un kernel en una cnn?"
+    },
+    {
+      "answer": "la zancada o 'stride' es el numero de pixeles que el filtro de convolucion se mueve en cada paso. un stride mas grande reduce el tamaño de la salida.",
+      "question": "que controla el 'stride' en una capa de convolucion?"
+    },
+    {
+      "answer": "el padding o relleno añade pixeles (generalmente ceros) alrededor de la imagen de entrada para que la capa de convolucion pueda procesar los bordes de manera mas efectiva y controlar el tamaño de la salida.",
+      "question": "cual es el proposito del padding?"
+    },
+    {
+      "answer": "si, proporcionando un conjunto de datos de validacion a traves de la propiedad 'validationdata' en el metodo .fit(). esto permite monitorear el rendimiento en datos no vistos y detectar el sobreajuste.",
+      "question": "es posible evaluar el modelo con datos de validacion durante el entrenamiento?"
+    },
+    {
+      "answer": "una vez que un modelo esta entrenado, se utiliza la funcion model.predict() y se le pasa un tensor con los datos de entrada para obtener la prediccion.",
+      "question": "como se usa un modelo ya entrenado para hacer una prediccion?"
+    },
+    {
+      "answer": "si, un tensor en tensorflow.js es un objeto inmutable. cualquier operacion que lo modifique, como una suma o un cambio de tipo, devuelve un nuevo tensor en lugar de alterar el original.",
+      "question": "los tensores se pueden modificar una vez creados?"
+    },
+    {
+      "answer": "el 'dtype' es una propiedad que especifica el tipo de datos que almacena el tensor, como 'float32' para numeros decimales o 'int32' para enteros. todos los elementos deben tener el mismo tipo.",
+      "question": "que define la propiedad 'dtype' de un tensor?"
+    },
+    {
+      "answer": "la 'forma' o 'shape' de un tensor define el tamaño de cada una de sus dimensiones. por ejemplo, [2, 3] es la forma de una matriz 2d con 2 filas y 3 columnas.",
+      "question": "a que se refiere la 'forma' de un tensor?"
+    },
+    {
+      "answer": "un modelo de capas es mas facil de depurar y modificar, mientras que un modelo grafico esta altamente optimizado para la inferencia rapida pero es mas dificil de alterar.",
+      "question": "cuales son las ventajas y desventajas de un modelo de capas frente a un modelo grafico?"
+    },
+    {
+      "answer": "el metodo model.summary() es una herramienta de depuracion que proporciona una vista tabular de la arquitectura del modelo, incluyendo cada capa, su forma de salida y sus parametros.",
+      "question": "que informacion proporciona model.summary()?"
+    },
+    {
+      "answer": "si, mediante el uso de node.js y el paquete @tensorflow/tfjs-node, es posible ejecutar tensorflow.js en dispositivos de borde como una raspberry pi.",
+      "question": "es posible usar tensorflow.js en dispositivos de iot como raspberry pi?"
+    },
+    {
+      "answer": "mediante el uso de devoluciones de llamada, como tf.callbacks.earlystopping, que detiene el entrenamiento si una metrica monitoreada, como la perdida de validacion, no mejora durante un numero determinado de epocas.",
+      "question": "como se puede prevenir el sobreajuste deteniendo el entrenamiento?"
+    },
+    {
+      "answer": "la normalizacion pone todas las caracteristicas de entrada en una escala comun (por ejemplo, de 0 a 1), lo que previene que las caracteristicas con rangos de valores mas grandes dominen el proceso de aprendizaje.",
+      "question": "por que es crucial la normalizacion de datos para el entrenamiento?"
+    },
+    {
+      "answer": "la cuantificacion reduce el tamaño del archivo de un modelo al disminuir la precision de sus pesos, lo que resulta en descargas mas rapidas y menor uso de memoria, con un impacto minimo en la precision.",
+      "question": "cuales son los beneficios de la cuantificacion de modelos?"
+    },
+    {
+      "answer": "los tensores permiten que las operaciones matematicas se ejecuten en paralelo en una gpu, lo que acelera drasticamente los calculos necesarios para entrenar redes neuronales profundas.",
+      "question": "como contribuyen los tensores a la velocidad del aprendizaje automatico?"
+    },
+    {
+      "answer": "en el navegador, se pueden usar elementos html como <img>, <canvas> o <video>. en node.js, se pueden leer directamente desde buffers de archivos como jpg o png.",
+      "question": "que formatos de imagen son compatibles con tensorflow.js?"
+    },
+    {
+      "answer": "las capas ocultas son las que se encuentran entre la capa de entrada y la de salida en una red neuronal, y son donde ocurre la mayor parte del aprendizaje y extraccion de caracteristicas complejas.",
+      "question": "donde ocurre el 'aprendizaje' en una red neuronal?"
+    },
+    {
+      "answer": "un sistema de recomendacion predice las preferencias del usuario. se puede construir uno con tensores calculando la similitud (por ejemplo, producto de puntos) entre un vector de usuario y vectores de articulos.",
+      "question": "como se puede usar tensorflow.js para crear un sistema de recomendacion?"
+    },
+    {
+      "answer": "si, es un proyecto de codigo abierto mantenido por google. esto fomenta la contribucion de la comunidad y la transparencia en su desarrollo.",
+      "question": "el proyecto tensorflow.js es de codigo abierto?"
+    },
+    {
+      "answer": "los tensores consumen memoria de la gpu que no es gestionada por el recolector de basura de javascript, por lo que es necesario liberarlos manualmente para evitar que la aplicacion se bloquee.",
+      "question": "por que es critica la gestion manual de la memoria de los tensores?"
+    },
+    {
+      "answer": "si. el modelo de toxicidad puede ser configurado con un umbral. si la puntuacion de toxicidad supera ese umbral, la salida indicara una coincidencia, simplificando la logica para el desarrollador.",
+      "question": "el clasificador de toxicidad puede dar una respuesta binaria?"
+    },
+    {
+      "answer": "la funcion tf.stack() se utiliza para tomar una lista de tensores y unirlos en un solo tensor a lo largo de una nueva dimension, lo que es esencial para el procesamiento por lotes.",
+      "question": "como se agrupan varios ejemplos en un solo lote para el modelo?"
+    },
+    {
+      "answer": "la division de datos es una practica estandar para evaluar de manera confiable el rendimiento de un modelo. el conjunto de prueba, en particular, proporciona una estimacion imparcial de como funcionara el modelo con datos del mundo real.",
+      "question": "por que es una buena practica dividir los datos?"
+    },
+    {
+      "answer": "los 'pesos' son los parametros que el modelo aprende durante el entrenamiento. son los valores numericos que definen las conexiones entre neuronas y determinan las predicciones del modelo.",
+      "question": "que son los parametros aprendibles de un modelo?"
+    },
+    {
+      "answer": "relu es una funcion de activacion simple y efectiva que ayuda a los modelos a aprender mas rapido al evitar el problema de los gradientes que se desvanecen durante el entrenamiento.",
+      "question": "cuales son las ventajas de usar relu como funcion de activacion?"
+    },
+    {
+      "answer": "si, la libreria danfo.js ofrece una api muy similar a la de pandas en python, permitiendo a los desarrolladores de javascript realizar tareas de manipulacion de datos de manera familiar y eficiente.",
+      "question": "hay alguna libreria en javascript que sea similar a pandas de python?"
+    },
+    {
+      "answer": "una perdida alta indica que el modelo esta cometiendo errores significativos en sus predicciones. el objetivo del entrenamiento es reducir este valor de perdida tanto como sea posible.",
+      "question": "que nos dice un valor de perdida alto?"
+    },
+    {
+      "answer": "la precision mide el porcentaje de predicciones correctas que hace un modelo. es una metrica facil de interpretar para evaluar el rendimiento en tareas de clasificacion.",
+      "question": "como se interpreta la metrica de precision?"
+    },
+    {
+      "answer": "si, al definir una capa se puede especificar un inicializador de kernel. esto puede ayudar al modelo a comenzar con pesos mas optimos, lo que puede acelerar la convergencia.",
+      "question": "es posible influir en los pesos iniciales de un modelo?"
+    },
+    {
+      "answer": "con el metodo model.save(), que puede apuntar a varios destinos como el almacenamiento local del navegador (usando 'localstorage://') para persistir un modelo entrenado.",
+      "question": "como puedo guardar mi modelo entrenado para usarlo mas tarde?"
+    }
+  ];
 
       const App = {
         model: null,
         embeddings: null,
         threshold: 0.6, // umbral de similitud para mostrar resultados
-        typingSpeed: 55, // en ms, vamos a simular un typing como streaming de texto
+        typingSpeed: 10, // en ms, vamos a simular un typing como streaming de texto
 
         // Inicializa la app: carga modelo y embebe dataset
         async init() {
