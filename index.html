@@ -105,29 +105,13 @@
     </main>
 
     <script>
-      const dataset = [
-        {
-          question: "¿Qué es la inteligencia artificial?",
-          answer:
-            "Es la simulación de procesos de inteligencia humana por parte de sistemas informáticos.",
-        },
-        {
-          question: "¿Qué es el aprendizaje automático?",
-          answer:
-            "Es una rama de la IA que permite a las máquinas aprender a partir de datos.",
-        },
-        {
-          question: "¿Qué es un modelo de lenguaje?",
-          answer:
-            "Un modelo de lenguaje es un sistema que predice o genera texto basado en patrones del lenguaje natural.",
-        },
-      ];
+      const dataset = [];
 
       const App = {
         model: null,
         embeddings: null,
-        threshold: 0.5, // umbral de similitud para mostrar resultados
-        typingSpeed: 35, // en ms, vamos a simular un typing como streaming de texto
+        threshold: 0.6, // umbral de similitud para mostrar resultados
+        typingSpeed: 55, // en ms, vamos a simular un typing como streaming de texto
 
         // Inicializa la app: carga modelo y embebe dataset
         async init() {
@@ -144,41 +128,40 @@
           log("🧠 Embedding del dataset...");
           const questions = dataset.map((q) => q.question);
           const rawEmbeddings = await this.model.embed(questions);
-          this.embeddings = this.normalizeEmbeddings(rawEmbeddings);
-          rawEmbeddings.dispose();
+          this.embeddings = rawEmbeddings;
           log(`✅ Dataset cargado con ${dataset.length} items.`);
-
           // Habilita el botón de búsqueda sólo cuando todo está listo.
           ui.searchButton.disabled = false;
         },
-        // Normaliza embeddings por norma L2 (unitarios)
-        normalizeEmbeddings(tensor) {
-          // Normaliza los vectores para que el cálculo de similitud coseno funcione correctamente.
-          // Imaginá cada oración como una flecha apuntando en un espacio abstracto.
-          // La normalización hace que todas las flechas tengan tamaño 1,
-          // así sólo comparamos hacia dónde apuntan, es decir, el significado.
-          return tf.div(tensor, tf.norm(tensor, 2, 1).expandDims(1));
+
+        async cosineSimilarity(vecA, vecB) {
+          // tf.tidy limpia todos los tensores intermedios dentro de esta función
+          const scoreTensor = tf.tidy(() => {
+            const a = vecA.squeeze();
+            const b = vecB.squeeze();
+            const aNorm = a.div(tf.norm(a));
+            const bNorm = b.div(tf.norm(b));
+            return aNorm.mul(bNorm).sum(); // retorna un tf.Scalar
+          });
+
+          const score = (await scoreTensor.data())[0];
+          scoreTensor.dispose(); // libera manualmente el tensor devuelto
+          return score;
         },
 
         async handleQuery(query) {
-          // Convierte la pregunta del usuario en un vector que representa su significado.
-          const qVec = await this.model.embed([query]);
-          // Normaliza este vector para que tenga magnitud 1 (unidad),
-          // igual que los vectores del dataset.
-          const qNorm = tf.div(qVec, tf.norm(qVec));
-          // Calcula la similitud coseno entre el vector de la consulta
-          // y cada vector pre-calculado del dataset.
-          // Esto es un número entre -1 y 1 que indica qué tan alineados están los significados.
-          // Más cercano a 1 = significado muy parecido.
-          const similarities = tf.matMul(qNorm, this.embeddings, false, true);
-          // Obtiene los valores de similitud como array de números.
-          const scores = await similarities.data();
-          // Limpia la memoria de TensorFlow
-          qVec.dispose();
-          qNorm.dispose();
-          similarities.dispose();
-          // Devuelve los puntajes de similitud.
-          return scores;
+          const cleanQuery = query.toLowerCase().trim();
+          const qEmbedding = await this.model.embed([cleanQuery]);
+          const results = [];
+
+          for (let i = 0; i < dataset.length; i++) {
+            const itemEmb = this.embeddings.slice([i, 0], [1, -1]);
+            const score = await this.cosineSimilarity(qEmbedding, itemEmb);
+            results.push({ ...dataset[i], score });
+          }
+
+          qEmbedding.dispose();
+          return results.sort((a, b) => b.score - a.score);
         },
 
         async runSearch() {
@@ -188,25 +171,69 @@
           ui.resultBox.innerHTML = "";
           log(`📝 Pregunta: "${query}"`);
 
-          const scores = await this.handleQuery(query);
-          const results = dataset
-            .map((item, i) => ({ ...item, score: scores[i] }))
-            .filter((r) => r.score > this.threshold)
-            .sort((a, b) => b.score - a.score);
+          const results = await this.handleQuery(query);
+          const top3 = results.slice(0, 3);
+          console.log(
+            "Top 3 scores:",
+            top3.map((r) => ({ score: r.score, question: r.question }))
+          );
 
-          if (results.length === 0) {
+          if (top3[0].score < 0.2) {
             typeWriter(
               ui.resultBox,
-              "⚠️ No se encontraron coincidencias relevantes."
+              `⚠️ No se encontraron coincidencias relevantes.\n📊 Mejor score: ${top3[0].score.toFixed(
+                3
+              )}\n\n💡 Intenta reformular tu pregunta o usar palabras clave diferentes.`
             );
           } else {
-            typeWriter(
-              ui.resultBox,
-              results
-                .map((r) => `✅ ${r.answer} (score: ${r.score.toFixed(2)})`)
-                .join("\n\n")
-            );
+            // Filtrar solo los que superen el threshold para mostrar
+            const goodResults = top3.filter((r) => r.score > this.threshold);
+
+            if (goodResults.length === 0) {
+              // Mostrar el mejor resultado aunque no supere el threshold
+              typeWriter(
+                ui.resultBox,
+                `🤔 Resultado con baja confianza:\n\n${
+                  top3[0].answer
+                }\n📊 Score: ${top3[0].score.toFixed(
+                  3
+                )}\n\n💡 ¿Era esto lo que buscabas?`
+              );
+            } else {
+              typeWriter(
+                ui.resultBox,
+                goodResults
+                  .map(
+                    (r, i) =>
+                      `${i + 1}. ${r.answer}\n📊 Score: ${r.score.toFixed(3)}`
+                  )
+                  .join("\n\n")
+              );
+            }
           }
+          //   const filteredResults = results.filter(
+          //     (r) => r.score > this.threshold
+          //   );
+
+          //   if (filteredResults.length === 0) {
+          //     typeWriter(
+          //       ui.resultBox,
+          //       `⚠️ No se encontraron coincidencias relevantes.\n📊 Mejor score: ${results[0].score.toFixed(
+          //         3
+          //       )}`
+          //     );
+          //   } else {
+          //     const top3 = filteredResults.slice(0, 3);
+          //     typeWriter(
+          //       ui.resultBox,
+          //       top3
+          //         .map(
+          //           (r, i) =>
+          //             `${i + 1}. ${r.answer}\n📊 Score: ${r.score.toFixed(3)}`
+          //         )
+          //         .join("\n\n")
+          //     );
+          //   }
         },
       };
 
