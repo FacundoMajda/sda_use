@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Universal Sentence Encoder</h1>
+        <h2 class="subtitle">Interfaz tipo Q&A</h2>
+      </header>
+
+      <!-- <ul>
+        <li>1- Se usa modelo de tensorflow 'USE'</li>
+        <li>2- Se pre-embebe texto como base</li>
+        <li>
+          3- Se implementa un sistema de preguntas y respuestas basado en la
+          similitud semántica
+        </li>
+      </ul> -->
+
+      <section class="description-section">
+        <h3>Funcionamiento</h3>
+        <div class="feature-list">
+          <div class="feature-item">
+            <h4>🧠 Modelo Universal Sentence Encoder (USE)</h4>
+            <p>
+              Se utiliza el modelo pre-entrenado de TensorFlow que convierte
+              texto en vectores de 512 dimensiones, capturando el significado
+              semántico de las oraciones.
+            </p>
+            <small class="annotation"
+              >📝 El modelo se carga desde CDN y funciona completamente en el
+              navegador</small
+            >
+          </div>
+
+          <div class="feature-item">
+            <h4>📚 Base de Conocimiento Pre-embebida</h4>
+            <p>
+              Se procesa una base de datos de texto predefinida, generando
+              embeddings (representaciones vectoriales) para cada fragmento de
+              información.
+            </p>
+            <small class="annotation"
+              >⚡ Los embeddings se calculan una sola vez al cargar la
+              página</small
+            >
+          </div>
+
+          <div class="feature-item">
+            <h4>🔍 Sistema de Similitud Semántica</h4>
+            <p>
+              Cuando haces una pregunta, se calcula su embedding y se compara
+              con todos los embeddings de la base usando similitud coseno para
+              encontrar las respuestas más relevantes.
+            </p>
+            <small class="annotation"
+              >🎯 El sistema no busca palabras exactas, sino significado
+              similar</small
+            >
+          </div>
+
+          <div class="feature-item">
+            <h4>📊 Ranking de Resultados</h4>
+            <p>
+              Los resultados se ordenan por puntuación de similitud (0-1),
+              mostrando las respuestas más relevantes primero.
+            </p>
+            <small class="annotation"
+              >🔢 Solo se muestran resultados con similitud > 0.5</small
+            >
+          </div>
+        </div>
+      </section>
+
+      <form id="controls" action="javascript:void(0);">
+        <label for="question-input" class="sr-only"
+          >Escribi tus preguntas acá</label
+        >
+        <input
+          type="text"
+          id="question-input"
+          placeholder="Escribi tus preguntas acá..."
+        />
+        <button type="button" id="search-button" class="button">
+          Preguntar
+        </button>
+      </form>
+
+      <section id="result-box" aria-labelledby="results-heading">
+        <h2 id="results-heading" class="sr-only">Resultados</h2>
+        <p id="initial-msg"></p>
+      </section>
+
+      <section aria-labelledby="console-heading">
+        <h2 id="console-heading">Consola</h2>
+        <div id="log-console"></div>
+      </section>
+    </main>
+  </body>
+</html>
